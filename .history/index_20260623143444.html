@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACS Short Courses — African Centre for Sustainable Cities Studies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EDEAE0;
+    --bg-deep:pink;
+    --ink:#1C2B2A;
+    --ink-soft:#4A5957;
+    --clay:#C1603C;
+    --clay-dark:#A24F31;
+    --sage:#7C9484;
+    --line:#C9C2AC;
+    --paper:#F5F2E8;
+    --display: 'Space Grotesk', sans-serif;
+    --body: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+    --maxw: 1140px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+  }
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;}
+
+  .grid-bg{
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:28px 28px;
+    background-position:-1px -1px;
+  }
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 20px;
+  }
+
+  .survey-rule{
+    position:relative;
+    border:none;
+    border-top:1px dashed var(--line);
+    margin:0;
+    height:1px;
+  }
+  .survey-rule::before, .survey-rule::after{
+    content:"+";
+    position:absolute;
+    top:-9px;
+    font-family:var(--mono);
+    font-size:14px;
+    color:var(--ink-soft);
+    opacity:.55;
+  }
+  .survey-rule::before{ left:20px; }
+  .survey-rule::after{ right:20px; }
+
+  
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(237,234,224,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 20px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--display);
+    font-weight:700;
+    font-size:18px;
+    letter-spacing:.01em;
+    text-decoration:none;
+    color:var(--ink);
+  }
+  .brand .mark{
+    width:30px;height:30px;
+    border-radius:3px;
+    background:var(--bg-deep);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--paper);
+    font-family:var(--mono);
+    font-size:12px;
+    flex-shrink:0;
+  }
+  .brand small{
+    display:block;
+    font-family:var(--mono);
+    font-weight:400;
+    font-size:10.5px;
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+  }
+  nav.links{
+    display:none;
+    gap:28px;
+    align-items:center;
+    font-size:14.5px;
+    font-weight:500;
+  }
+  nav.links a{
+    text-decoration:none;
+    color:var(--ink-soft);
+    position:relative;
+    padding-bottom:3px;
+  }
+  nav.links a:hover{ color:var(--ink); }
+  .cta-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--clay);
+    color:var(--paper);
+    font-family:var(--body);
+    font-weight:600;
+    font-size:14.5px;
+    padding:11px 20px;
+    border-radius:3px;
+    text-decoration:none;
+    border:1px solid var(--clay-dark);
+    transition:transform .15s ease, background .15s ease;
+    white-space:nowrap;
+  }
+  .cta-btn:hover{ background:var(--clay-dark); transform:translateY(-1px); }
+  .cta-btn.ghost{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--ink);
+  }
+  .cta-btn.ghost:hover{ background:var(--ink); color:var(--paper); }
+
+  .menu-toggle{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    width:34px;height:34px;
+    background:none;
+    border:1px solid var(--line);
+    border-radius:3px;
+    cursor:pointer;
+    padding:0;
+  }
+  .menu-toggle span{
+    width:16px;height:2px;
+    background:var(--ink);
+    margin:0 auto;
+    transition:.2s;
+  }
+  .menu-toggle[aria-expanded="true"] span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .menu-toggle[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+  .menu-toggle[aria-expanded="true"] span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+  .mobile-panel{
+    display:none;
+    flex-direction:column;
+    padding:6px 20px 20px;
+    gap:14px;
+    border-top:1px solid var(--line);
+  }
+  .mobile-panel.open{ display:flex; }
+  .mobile-panel a{
+    text-decoration:none;
+    color:var(--ink);
+    font-weight:500;
+    font-size:15px;
+    padding:6px 0;
+  }
+
+  /* ---- hero ---- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    background:var(--bg);
+  }
+  .hero .wrap{
+    padding:64px 20px 0;
+    display:grid;
+    gap:28px;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--sage);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px;height:7px;
+    background:var(--clay);
+    border-radius:50%;
+    display:inline-block;
+  }
+  h1{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(34px, 7vw, 62px);
+    line-height:1.04;
+    letter-spacing:-.01em;
+    margin:0;
+    max-width:760px;
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--clay);
+  }
+  .hero p.lead{
+    font-size:clamp(15.5px, 2vw, 18px);
+    color:var(--ink-soft);
+    max-width:540px;
+    margin:0;
+  }
+  .hero-ctas{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .hero-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:24px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--ink-soft);
+    padding:18px 0 0;
+  }
+  .hero-meta span b{ color:var(--ink); font-weight:500; }
+
+  .skyline-box{
+    margin-top:10px;
+    border:1px solid var(--line);
+    border-bottom:none;
+    background:var(--paper);
+    position:relative;
+  }
+  .skyline-box .tag{
+    position:absolute;
+    top:10px; left:14px;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:.03em;
+    z-index:2;
+  }
+  .skyline-box .tag.right{ left:auto; right:14px; }
+
+  /* ---- section shells ---- */
+  section{ position:relative; }
+  .section-pad{ padding:64px 0; }
+  .section-head{
+    max-width:600px;
+    margin:0 0 36px;
+  }
+  .section-head .eyebrow{ margin-bottom:10px; }
+  h2{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(26px, 4vw, 36px);
+    line-height:1.1;
+    margin:0 0 12px;
+  }
+  .section-head p{
+    color:var(--ink-soft);
+    font-size:15.5px;
+    margin:0;
+  }
+
+  /* ---- about strip ---- */
+  .about{
+    background:var(--bg-deep);
+    color:var(--paper);
+  }
+  .about .wrap{
+    padding:54px 20px;
+    display:grid;
+    gap:28px;
+  }
+  .about h2{ color:var(--paper); }
+  .about p{ color:#C9D6D2; font-size:15.5px; max-width:640px; }
+  .about-stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+    margin-top:10px;
+  }
+  .stat b{
+    display:block;
+    font-family:var(--display);
+    font-size:28px;
+    color:var(--clay);
+  }
+  .stat span{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:#9FB3AE;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+  }
+
+  /* ---- course cards ---- */
+  .course-grid{
+    display:grid;
+    gap:20px;
+    grid-template-columns:1fr;
+  }
+  .course-grid--single{
+    max-width:380px;
+  }
+  .course-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    opacity:0;
+    transform:translateY(16px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .course-card.visible{ opacity:1; transform:none; }
+  .card-tags{
+    display:flex;
+    justify-content:space-between;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--sage);
+    letter-spacing:.03em;
+  }
+  .course-card h3{
+    font-family:var(--display);
+    font-size:19px;
+    margin:0;
+    line-height:1.25;
+  }
+  .course-card p{
+    margin:0;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .card-foot{
+    margin-top:auto;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:13px;
+  }
+  .card-foot .fmt{ color:var(--ink-soft); }
+  .card-foot a{
+    text-decoration:none;
+    color:var(--clay-dark);
+    font-weight:600;
+  }
+  .card-foot a:hover{ text-decoration:underline; }
+
+  /* ---- how it works ---- */
+  .steps{
+    display:grid;
+    gap:18px;
+    grid-template-columns:1fr;
+  }
+  .step{
+    display:flex;
+    gap:16px;
+    padding:18px 0;
+  }
+  .step + .step{ border-top:1px dashed var(--line); }
+  .step .num{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--clay);
+    flex-shrink:0;
+    width:34px;
+    padding-top:2px;
+  }
+  .step h4{
+    font-family:var(--display);
+    font-size:16.5px;
+    margin:0 0 4px;
+  }
+  .step p{ margin:0; font-size:14px; color:var(--ink-soft); }
+
+  /* ---- quote ---- */
+  .quote-block{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-left:3px solid var(--clay);
+    padding:28px 24px;
+    margin-top:8px;
+  }
+  .quote-block p{
+    font-family:var(--display);
+    font-size:18px;
+    line-height:1.4;
+    margin:0 0 12px;
+    color:var(--ink);
+  }
+  .quote-block span{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  /* ---- final cta ---- */
+  .final-cta{
+    background:var(--bg-deep);
+    color:var(--paper);
+    text-align:center;
+  }
+  .final-cta .wrap{ padding:64px 20px; }
+  .final-cta h2{ color:var(--paper); margin-bottom:14px; }
+  .final-cta p{ color:#C9D6D2; max-width:480px; margin:0 auto 28px; font-size:15.5px; }
+  .final-cta .hero-ctas{ justify-content:center; }
+
+  /* ---- footer ---- */
+  footer{
+    padding:36px 0;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .foot-grid{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    padding-top:24px;
+  }
+  .foot-grid .brand{ margin-bottom:4px; }
+  footer .meta-line{
+    font-family:var(--mono);
+    font-size:11.5px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 18px;
+  }
+
+  /* ---- scroll reveal generic ---- */
+  .reveal{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .55s ease, transform .55s ease;
+  }
+  .reveal.visible{ opacity:1; transform:none; }
+
+  @media (prefers-reduced-motion: reduce){
+    .course-card, .reveal{ transition:none; opacity:1; transform:none; }
+  }
+
+  /* ---- desktop ---- */
+  @media (min-width:768px){
+    nav.links{ display:flex; }
+    .menu-toggle{ display:none; }
+    .hero .wrap{ padding-top:84px; }
+    .hero-meta{ padding-top:26px; }
+    .about .wrap{
+      grid-template-columns:1.1fr .9fr;
+      align-items:center;
+      padding:74px 20px;
+    }
+    .course-grid{ grid-template-columns:repeat(2,1fr); }
+    .steps{ grid-template-columns:repeat(2,1fr); column-gap:40px; }
+    .step + .step{ border-top:1px dashed var(--line); }
+    .foot-grid{
+      flex-direction:row;
+      justify-content:space-between;
+      align-items:flex-end;
+    }
+  }
+  @media (min-width:1024px){
+    .course-grid{ grid-template-columns:repeat(4,1fr); }
+  }
+  .course-grid.course-grid--single{
+    grid-template-columns:1fr !important;
+    margin:0 auto;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav wrap">
+    <a class="brand" href="#top">
+      <span class="mark">ACS</span>
+      <span>
+        Sustainable Cities
+        <small>ARU &middot; Short Courses</small>
+      </span>
+    </a>
+    <nav class="links">
+      <a href="#courses">Courses</a>
+      <a href="#about">About ACS</a>
+      <a href="#how">How it works</a>
+      <a class="cta-btn" href="http://localhost/moodle" target="_blank" rel="noopener">Go to LMS</a>
+    </nav>
+    <button class="menu-toggle" aria-expanded="false" aria-label="Open menu" id="menuToggle">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="#courses">Courses</a>
+    <a href="#about">About ACS</a>
+    <a href="#how">How it works</a>
+    <a class="cta-btn" href="http://localhost/moodle" target="_blank" rel="noopener" style="justify-content:center;">Go to LMS</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">African Centre for Sustainable Cities Studies</p>
+      <h1>Skills for cities that have to <em>work harder</em>, on less.</h1>
+      <p class="lead">Short, practitioner-led courses for working professionals — urban planning, water and sanitation, GIS, and climate resilience, taught through real East African case studies.</p>
+      <div class="hero-ctas">
+        <a class="cta-btn" href="#courses">Browse courses</a>
+        <a class="cta-btn ghost" href="#how">How enrolment works</a>
+      </div>
+      <div class="hero-meta">
+        <span>FORMAT <b>Online &middot; self-paced</b></span>
+        <span>NEXT INTAKE <b>Rolling enrolment</b></span>
+        <span>PLATFORM <b>ACS Moodle LMS</b></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="skyline-box grid-bg">
+        <span class="tag">SECTION A&ndash;A &middot; ELEV. PROFILE</span>
+        <span class="tag right" id="dateTag"></span>
+        <svg viewBox="0 0 1100 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+          <!-- contour rings -->
+          <path d="M0,230 C150,210 280,250 430,225 C580,200 700,235 860,215 C950,203 1030,222 1100,210" fill="none" stroke="#7C9484" stroke-width="1.4" opacity="0.55"/>
+          <path d="M0,250 C160,232 300,265 440,245 C600,222 740,252 880,236 C970,226 1040,240 1100,232" fill="none" stroke="#C9C2AC" stroke-width="1.2" opacity="0.7"/>
+          <path d="M0,268 C170,256 320,278 460,262 C610,246 760,272 900,258 C980,250 1040,260 1100,254" fill="none" stroke="#C9C2AC" stroke-width="1.2" opacity="0.5"/>
+          <!-- buildings -->
+          <g fill="#16302F">
+            <rect x="60"  y="150" width="34" height="100"/>
+            <rect x="104" y="120" width="26" height="130"/>
+            <rect x="140" y="170" width="40" height="80"/>
+            <rect x="190" y="95"  width="30" height="155"/>
+            <rect x="230" y="140" width="22" height="110"/>
+            <rect x="320" y="160" width="36" height="90"/>
+            <rect x="366" y="110" width="28" height="140"/>
+            <rect x="404" y="180" width="44" height="70"/>
+            <rect x="540" y="130" width="30" height="120"/>
+            <rect x="578" y="165" width="40" height="85"/>
+            <rect x="626" y="100" width="26" height="150"/>
+            <rect x="700" y="175" width="34" height="75"/>
+            <rect x="740" y="140" width="24" height="110"/>
+            <rect x="820" y="155" width="38" height="95"/>
+            <rect x="866" y="115" width="28" height="135"/>
+            <rect x="940" y="180" width="32" height="70"/>
+            <rect x="980" y="150" width="22" height="100"/>
+          </g>
+          <!-- survey markers / elevation callouts -->
+          <g font-family="IBM Plex Mono" font-size="10" fill="#4A5957">
+            <line x1="190" y1="95" x2="190" y2="80" stroke="#C1603C" stroke-width="1"/>
+            <circle cx="190" cy="80" r="2.5" fill="#C1603C"/>
+            <text x="198" y="83">+38.2m</text>
+
+            <line x1="626" y1="100" x2="626" y2="80" stroke="#C1603C" stroke-width="1"/>
+            <circle cx="626" cy="80" r="2.5" fill="#C1603C"/>
+            <text x="634" y="83">+41.6m</text>
+
+            <line x1="866" y1="115" x2="866" y2="80" stroke="#C1603C" stroke-width="1"/>
+            <circle cx="866" cy="80" r="2.5" fill="#C1603C"/>
+            <text x="874" y="83">+36.0m</text>
+          </g>
+          <line x1="0" y1="250" x2="1100" y2="250" stroke="#1C2B2A" stroke-width="1"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <hr class="survey-rule">
+
+  <section class="about" id="about">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow" style="color:#9FB3AE;">About the Centre</p>
+        <h2>Research-grade thinking, field-tested delivery.</h2>
+        <p>ACS sits inside Ardhi University's blended learning strategy, translating its research on urban land, infrastructure and climate risk into short courses that working professionals can actually finish — alongside a job, in the field, on a connection that drops.</p>
+        <a class="cta-btn" href="#courses" style="margin-top:8px;">See what's on offer</a>
+      </div>
+      <div class="about-stats">
+        <div class="stat"><b>1</b><span>Live short course</span></div>
+        <div class="stat"><b>10+</b><span>Professionals per cohort</span></div>
+        <div class="stat"><b>100%</b><span>Online, self-paced</span></div>
+        <div class="stat"><b>1</b><span>Certificate per course</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad" id="courses">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Course catalogue</p>
+        <h2>Start with what's live now.</h2>
+        <p>More courses from the ACS curriculum are in development — this one is open for enrolment today.</p>
+      </div>
+
+      <div class="course-grid course-grid--single">
+        <article class="course-card">
+          <div class="card-tags"><span>ISC101</span><span>SELF-PACED</span></div>
+          <h3>Introduction to Sustainable Cities</h3>
+          <p>Video lessons, downloadable resources and a discussion forum covering the core ideas behind sustainable urban development — start to finish, on your own schedule.</p>
+          <div class="card-foot">
+            <span class="fmt">Online &middot; Certificate</span>
+            <a href="http://localhost/moodle/course/view.php?id=2" target="_blank" rel="noopener">View course &rarr;</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <hr class="survey-rule">
+
+  <section class="section-pad" id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Getting started</p>
+        <h2>Four steps from sign-up to certificate.</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="num">01</span>
+          <div>
+            <h4>Create your account</h4>
+            <p>Register on the ACS Moodle LMS with your name and email — takes under two minutes.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">02</span>
+          <div>
+            <h4>Enrol in a course</h4>
+            <p>Pick a course code from the catalogue above and self-enrol directly from its page.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">03</span>
+          <div>
+            <h4>Work through the lessons</h4>
+            <p>Video lessons, downloadable resources, and a forum to compare notes with other professionals.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">04</span>
+          <div>
+            <h4>Pass the quiz, get certified</h4>
+            <p>Clear the auto-graded quiz and your completion certificate generates automatically.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="quote-block reveal" style="margin-top:34px;">
+        <p>"I finished the GIS course between site visits — the lessons were short enough that I never lost the thread."</p>
+        <span>— Pilot cohort participant, Dar es Salaam</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="wrap">
+      <p class="eyebrow" style="color:#9FB3AE; justify-content:center;">Ready when you are</p>
+      <h2>Your city can't wait for a perfect plan.</h2>
+      <p>Start with one course, finish it on your own schedule, and bring the certificate back to your team.</p>
+      <div class="hero-ctas">
+        <a class="cta-btn" href="http://localhost/moodle" target="_blank" rel="noopener">Enrol now</a>
+        <a class="cta-btn ghost" style="border-color:#C9D6D2; color:#F5F2E8;" href="#courses">Back to courses</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="grid-bg">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top">
+          <span class="mark">ACS</span>
+          <span>
+            Sustainable Cities
+            <small>ARU &middot; Short Courses</small>
+          </span>
+        </a>
+        <p style="margin:8px 0 0; max-width:360px;">African Centre for Sustainable Cities Studies, Ardhi University. Short courses for urban practitioners.</p>
+      </div>
+      <div>
+        <p class="meta-line">
+          <span>EMAIL acs@aru.ac.tz</span>
+          <span>LMS acs-lms.aru.ac.tz</span>
+          <span>LOCATION Dar es Salaam, Tanzania</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const panel = document.getElementById('mobilePanel');
+  toggle.addEventListener('click', () => {
+    const open = panel.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    panel.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // survey-style date stamp in hero diagram
+  const d = new Date();
+  document.getElementById('dateTag').textContent =
+    'REV ' + d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal, .course-card');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
